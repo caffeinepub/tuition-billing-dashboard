@@ -12,43 +12,6 @@ export interface LocalPlan {
 }
 
 export const SAMPLE_PLANS: LocalPlan[] = [
-  // ── Training Plans ──
-  {
-    id: 1n,
-    name: "Male | 1 Time/Day - 30 Days",
-    fee: 1300n,
-    category: "Training",
-  },
-  {
-    id: 2n,
-    name: "Male | 2 Time/Day - 30 Days",
-    fee: 2450n,
-    category: "Training",
-  },
-  {
-    id: 3n,
-    name: "Female | 2 Time/Day - 30 Days",
-    fee: 2100n,
-    category: "Training",
-  },
-  {
-    id: 4n,
-    name: "Female | 1 Time/Day - 30 Days",
-    fee: 1050n,
-    category: "Training",
-  },
-  {
-    id: 5n,
-    name: "Male | 2 Time/Day - 15 Days",
-    fee: 1300n,
-    category: "Training",
-  },
-  {
-    id: 6n,
-    name: "Female | 2 Time/Day - 15 Days",
-    fee: 1050n,
-    category: "Training",
-  },
   // ── Meal Plans ──
   {
     id: 7n,
@@ -174,13 +137,11 @@ export function useSearchStudents(query: string) {
     queryFn: async () => {
       if (!actor || !query.trim()) return [];
       const q = query.trim();
-      // Search by name, email, and phone in parallel
       const [byName, byEmail, byPhone] = await Promise.all([
         actor.searchStudentsByName(q),
         actor.searchStudentsByEmail(q),
         actor.searchStudentsByPhone(q),
       ]);
-      // Deduplicate by id
       const seen = new Set<string>();
       const combined: Student[] = [];
       for (const s of [...byName, ...byEmail, ...byPhone]) {
@@ -211,14 +172,12 @@ export function useMakePayment() {
       notes: string;
     }) => {
       if (!actor) throw new Error("Actor not ready");
-      // Call backend (no notes param in actual API)
       await actor.makePayment(
         params.studentId,
         params.planId,
         params.amountPaid,
         params.mode,
       );
-      // Save locally
       const existing = loadLocalPayments();
       const newPayment: LocalPayment = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,

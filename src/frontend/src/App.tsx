@@ -67,7 +67,6 @@ function BillingApp() {
   }, [actor]);
 
   const plans = SAMPLE_PLANS;
-  const trainingPlans = plans.filter((p) => p.category === "Training");
   const mealPlans = plans.filter((p) => p.category === "Meal Plan");
 
   const { data: allPayments = [], isLoading: paymentsLoading } =
@@ -459,24 +458,6 @@ function BillingApp() {
                         <SelectValue placeholder="Select a plan…" />
                       </SelectTrigger>
                       <SelectContent className="bg-popover border-border">
-                        <SelectGroup>
-                          <SelectLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 py-1.5">
-                            Training Plans
-                          </SelectLabel>
-                          {trainingPlans.map((plan) => (
-                            <SelectItem
-                              key={plan.id.toString()}
-                              value={plan.id.toString()}
-                              className="focus:bg-accent"
-                            >
-                              <span className="font-medium">{plan.name}</span>
-                              <span className="text-muted-foreground ml-2">
-                                — {formatAmount(plan.fee)}
-                              </span>
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                        <Separator className="my-1 bg-border" />
                         <SelectGroup>
                           <SelectLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 py-1.5">
                             Meal Plans
